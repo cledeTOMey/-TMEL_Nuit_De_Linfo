@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(){
         data: {}
       }).then(function(response){
           response.data.forEach(function(element){   
-
+            console.log(element);
         });
     });
 
