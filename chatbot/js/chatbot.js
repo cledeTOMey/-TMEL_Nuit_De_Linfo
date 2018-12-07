@@ -18,13 +18,30 @@ document.addEventListener("DOMContentLoaded", function(){
                 data: {}
               }).then(function(response){
                   response.data.forEach(function(element){   
-                    let p_bot_message = document.createElement("p");
-                    let div_bot_message = document.createElement("div");
-                    div_bot_message.classList.add("BotMessage");
-                    p_bot_message.appendChild(document.createTextNode(element));
-                    div_bot_message.appendChild(p_bot_message);
-                    chatHistory.appendChild(div_bot_message);
-                    console.log("Test");
+                    setTimeout(function(){
+                        let p_bot_message = document.createElement("p");
+                        let div_bot_message = document.createElement("div");
+                        div_bot_message.id = "bite";
+                        div_bot_message.classList.add("BotMessage");
+                        p_bot_message.appendChild(document.createTextNode("..."));
+                        div_bot_message.appendChild(p_bot_message);
+                        chatHistory.appendChild(div_bot_message);
+                    }, 500);
+                    setTimeout(function(){
+                        //chatHistory.removeChild(div_bot_message);
+                        document.getElementById("bite").parentElement.removeChild(document.getElementById("bite"));
+                        console.log("ZIZI");
+                    }, 2000);
+                    setTimeout(function(){
+                        let p_bot_message = document.createElement("p");
+                        let div_bot_message = document.createElement("div");
+                        div_bot_message.classList.add("BotMessage");
+                        p_bot_message.appendChild(document.createTextNode(element));
+                        div_bot_message.appendChild(p_bot_message);
+                        chatHistory.appendChild(div_bot_message);
+                        responsiveVoice.speak(element, "French Male");
+                        console.log(element);
+                    }, 2800);
                 });
             });
             text.value = "";
