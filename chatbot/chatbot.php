@@ -1,7 +1,19 @@
 <?php
 //nom IA: JYC
+
+class DB{
+	private static $connection = null;
+	public static function getInstance(){
+		if(self::$connection == null){
+            self::$connection = new PDO("pgsql:host=localhost;port=5432;dbname=chatbot","postgres","");
+            $searchpath = self::$connection->exec('SET search_path TO chatbot');
+		}
+		return self::$connection;
+	}
+}
+
 $RESSEMBLANCE_PERCENTAGE = 0.7;
-$user_sentence = "obtenir position";
+$user_sentence = $_GET["usr_message"];
 
 $data_base_key_words = [
     "pronouns" => [
@@ -49,8 +61,16 @@ $sentence_words = explode(" ", $user_sentence);
 
 $thug_level = 0;
 
-echo "For sentence \"".$user_sentence."\" :\n\n";
+$array = array();
+//$array[] = $user_sentence;
 $sentence_type = "None";
+$user_sentence = strtolower($user_sentence);
+$getdata = DB::getInstance()->prepare("SELECT * FROM motscles M JOIN reponses R ON M.idmot = R.idmot WHERE M.libelle_mot = '".$user_sentence."'");
+$getdata->execute();
+while($checkrow = $getdata->fetch(PDO::FETCH_ASSOC)){
+    $array[] = $checkrow["text_reponse"];
+}
+echo json_encode($array);
 
 foreach ($sentence_words as $word) {
     $selected_word = null;
@@ -66,25 +86,25 @@ foreach ($sentence_words as $word) {
                         $selected_word_percentage = $perc;
                     }
 
-                    echo "Recognized the word '".$word."':\n";
+                    /*echo "Recognized the word '".$word."':\n";
                     echo "\t- Correspond à '".$final_word."' avec un taux de ".round($perc, 2)."%\n";
                     echo "\t- Sous-Categorie: ".$sub_key_type."\n";
-                    echo "\t- Type de mot: ".$key_word_type;
+                    echo "\t- Type de mot: ".$key_word_type;*/
 
                     if ($key_word_type == "swear_words") {
                         $thug_level += 2;
-                        echo " (+2 TL because swear word)";
+                        //echo " (+2 TL because swear word)";
                     } else if ($key_word_type == "_commands") {
-                        echo "\nCMD";
+                        //echo "\nCMD";
                     }
 
-                    echo "\n";
+                    //echo "\n";
                     (maj_abuse_quantity($word))? $thug_level++: FALSE;
                 }
             }
         }
     }
-    echo "Selected match for '".$word."': ".(($selected_word != null)? $selected_word: "None")."\n";
+    //echo "Selected match for '".$word."': ".(($selected_word != null)? $selected_word: "None")."\n";
 }
 
 if (strpos($user_sentence, "?") !== FALSE) $sentence_type = "Question";
@@ -93,9 +113,9 @@ if (strpos($user_sentence, "!") !== FALSE) {
     if ($thug_level > 0) $thug_level++;
 }
 
-echo "----------------------------------------------------------------------\n";
-echo "• Sentence type: ".$sentence_type."\n";
-echo "THUG LEVEL: ".$thug_level."\n\n\n\n";
+//echo "----------------------------------------------------------------------\n";
+//echo "• Sentence type: ".$sentence_type."\n";
+//echo "THUG LEVEL: ".$thug_level."\n\n\n\n";
 
 function maj_abuse_quantity($word) {
     $maj_letters = 0;

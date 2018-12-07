@@ -12,26 +12,23 @@ document.addEventListener("DOMContentLoaded", function(){
             div_message.appendChild(p_message);
             chatHistory.appendChild(div_message);
             //chatHistory.appendChild(document.createElement("br"));
-            if(text.value == "Salut !"){
-                let p_bot_message = document.createElement("p");
-                p_bot_message.appendChild(document.createTextNode("Bonjour humain !"));
-                let div_bot_message = document.createElement("div");
-                div_bot_message.classList.add("BotMessage");
-                div_bot_message.appendChild(p_bot_message);
-                chatHistory.appendChild(div_bot_message);
-            }
+            axios({
+                method: 'get',
+                url: './chatbot.php?usr_message='+text.value,
+                data: {}
+              }).then(function(response){
+                  response.data.forEach(function(element){   
+                    let p_bot_message = document.createElement("p");
+                    let div_bot_message = document.createElement("div");
+                    div_bot_message.classList.add("BotMessage");
+                    p_bot_message.appendChild(document.createTextNode(element));
+                    div_bot_message.appendChild(p_bot_message);
+                    chatHistory.appendChild(div_bot_message);
+                    console.log("Test");
+                });
+            });
             text.value = "";
         }
-    });
-
-    axios({
-        method: 'get',
-        url: './data.php',
-        data: {}
-      }).then(function(response){
-          response.data.forEach(function(element){   
-            console.log(element);
-        });
     });
 
 });
