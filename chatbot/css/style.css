@@ -19,18 +19,19 @@ body, *{
     width: 75%;
 }
 #send-message button{
-    min-width: 18%;
-    max-width: 20%;
+    min-width: 8%;
+    max-width: 10%;
     float: right;
 }
 .BotMessage{
     height: 2vh;
+    margin-bottom: 2%;
 }
 .BotMessage p{
     display: inline-block;
     max-width: 50%;
     word-wrap:break-word;
-    background: rgb(220, 220, 220);
+    background: rgb(34, 34, 34);
     padding: 1%;
     border-radius: 30px;
     text-align: justify;
@@ -38,7 +39,7 @@ body, *{
     align-items: flex-start;
     float: right;
     margin: 1%;
-    margin-bottom: 2%;
+    margin-bottom: 6%;
 }
 .SendMessage p{
     display: inline-block;
@@ -49,5 +50,6 @@ body, *{
     border-radius: 30px;
     text-align: justify;
     margin: 1%;
+    margin-bottom: 3%;
 
 }
