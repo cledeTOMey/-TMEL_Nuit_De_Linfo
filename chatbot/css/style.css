@@ -19,13 +19,13 @@ body, *{
     width: 75%;
 }
 #send-message button{
-    min-width: 18%;
-    max-width: 20%;
+    min-width: 8%;
+    max-width: 10%;
     float: right;
 }
 .BotMessage{
     height: 2vh;
-margin-bottom: 2%;
+    margin-bottom: 2%;
 }
 .BotMessage p{
     display: inline-block;

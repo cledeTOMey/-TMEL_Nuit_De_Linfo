@@ -11,9 +11,10 @@ if(isset($_POST["libelle"]) && isset($_POST["poid"]) && isset($_POST["sortie"]))
 	$request->bindParam(':libelle', $_POST["libelle"]);
 	$request->bindParam(':poid', $_POST["poid"]);
 	$request->execute();
-	$id = DB::getInstance()->prepare("SELECT idmot WHERE libelle_mot = :libelle");
-	$id->bindParam(':libelle', $_POST["libelle"]);
-	$id->execute();
+	$getid = DB::getInstance()->prepare("SELECT idmot FROM motscles WHERE libelle_mot = :libelle");
+	$getid->bindParam(':libelle', $_POST["libelle"]);
+	$getid->execute();
+	$id = $getid->fetch(PDO::FETCH_ASSOC);
 	$request2 = DB::getInstance()->prepare("INSERT INTO reponses(idmot, text_reponse) values(:idmot, :sortie)");
 	$request2->bindParam(':idmot', $_POST["idmot"]);
 	$request2->bindParam(':sortie', $_POST["sortie"]);

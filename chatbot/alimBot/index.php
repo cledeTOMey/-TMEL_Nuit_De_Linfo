@@ -12,7 +12,13 @@ include_once("db.php");
  	<title>Alim Bot</title>
  </head>
  <body>
+ 	<?php 
+ 	$getmotscles = DB::getInstance()->prepare("SELECT * FROM motscles");
+ 	$getmotscles->execute();
+
+ 	 ?>
  	<h1>Formulaire d'alimentation</h1>
+ 	<h2>Correspondances</h2>
  	<form method="post" action="add.php">
  		<label>Entrée libelle:</label>
  		<input type="text" name="libelle">
@@ -22,5 +28,23 @@ include_once("db.php");
  		<input type="text" name="sortie">
  		<input type="submit" name="submit">
  	</form>
+
+ 	<h2>Synonymes</h2>
+ 	<form method="post" action="add.php">
+ 		<select>
+ 			<option name="">-</option>
+ 			<?php 
+ 			while($motscles = $getmotscles->fetch(PDO::FETCH_ASSOC))
+ 			{
+ 				$val = $motscles[1];
+ 				$key = $motscles[0];
+ 				var_dump($val);
+ 				echo "<option name='$key'>$val</option>";
+ 			}
+
+ 			 ?>
+ 		</select>
+ 	</form>
+
  </body>
  </html>
